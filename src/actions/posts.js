@@ -55,14 +55,37 @@ export const insertDataSuccess = (data) =>{
     }
 }
 
+export const fetchPostSuccess = (data) =>{
+    return{
+        type:'SINGLE_POST_FETCH_SUCCESS',
+        data:data
+    }
+}
+
 
 
 export const insertDataListener = (post) => dispatch =>{
 
     database.push(post).then((data)=>{
-        dispatch(insertDataSuccess(post))
+        let obj = {
+            title:post.title,
+            content:post.content,
+            id:data.key
+        }
+        dispatch(insertDataSuccess(obj))
     }).catch(err=>{
         console.log(err)
+    })
+}
+
+export const fetchPost = (key) => dispatch =>{
+    
+    database.child(key).once('value', snap=>{
+        let obj = {id:snap.key, title:snap.val().title,content:snap.val().content}
+        dispatch(fetchPostSuccess(obj))
+        console.log(obj)
+    }, err=>{
+        console.log('Error while loading single post DATA. Error:' + err)
     })
 }
 
@@ -93,8 +116,9 @@ export const fetchDataListener = () => dispatch =>{
 
 
 export const deleteDataListener = (key) => dispatch =>{
-    database.remove(key).then(()=>{
+    database.child(key).remove().then(()=>{
         dispatch(deleteData(key))
+        console.log('data deleted')
     }).catch(err=>{
         dispatch(deleteDataError(err))
         console.log(err)

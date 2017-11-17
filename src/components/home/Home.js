@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import Post from './post'
 
 class Home extends Component{
     constructor(props){
@@ -10,13 +11,14 @@ class Home extends Component{
 
     render(){
         return(
-            <div>
-                <h1>home</h1>
-                {this.props.posts.length >0 && 
-                   this.props.posts[0].map(post=>{
-                       return <h1 key={post.id}>{post.title}</h1>
-                   })
-                }
+            <div className="container-fluid">
+                <div className="row">
+                {this.props.posts.all && 
+                    this.props.posts.all.map(post=>{
+                        return <Post key={post.id} {...post} />
+                    })
+                 }
+                </div>
             </div>
         )
     }

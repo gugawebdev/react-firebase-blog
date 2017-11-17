@@ -7,9 +7,12 @@ import {bindActionCreators} from 'redux'
 import * as postsActions from './actions/posts'
 import database from './config/config'
 
+
 //COMPONENTS IMPORTS
 import Home from './components/home/Home'
 import Contact from './components/contact/Contact'
+import Header from './components/header/Header'
+import BlogPost from './components/blog_post/blogPost'
 
 
 class App extends Component {
@@ -21,22 +24,27 @@ class App extends Component {
   
   componentDidMount(){
     this.props.fetchDataListener()
-    setInterval(()=>{
-      this.props.insertDataListener({title:'test', content:'random stuff'})
-    },10000)
+
   }
+  
 
 
 
   render() {
     return (
+      
       <BrowserRouter>
+      
         <div>
+        
+        <Header />
+
           <Switch>
           
           <Route path="/" component={Home} exact/>
           <Route path="/contact" component={Contact} exact/>
-            
+          <Route path="/post/:id" component={BlogPost} exact/>  
+
           </Switch>
         </div>
       </BrowserRouter>
